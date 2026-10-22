@@ -1,0 +1,39 @@
+name: Problema
+description: Algo não funciona como deveria (no jogo, no app, no site ou no CI).
+labels: [bug]
+body:
+  - type: textarea
+    id: o-que
+    attributes:
+      label: O que aconteceu
+      description: O que você viu e o que esperava ver.
+    validations:
+      required: true
+  - type: textarea
+    id: passos
+    attributes:
+      label: Como repetir
+      placeholder: |
+        1. Abri o jogo no celular
+        2. Toquei em…
+        3. Apareceu…
+    validations:
+      required: true
+  - type: dropdown
+    id: onde
+    attributes:
+      label: Onde
+      multiple: true
+      options: [Web no computador, Web no celular, App Android, App iOS, CI ou deploy, Outro]
+    validations:
+      required: true
+  - type: input
+    id: versao
+    attributes:
+      label: Versão ou link
+      description: Versão do app (Ajustes → Sobre), link do run do CI ou do teste.
+  - type: textarea
+    id: extra
+    attributes:
+      label: Captura, vídeo ou log
+      description: Arraste aqui. Nada de senha, chave ou dado pessoal de jogador.

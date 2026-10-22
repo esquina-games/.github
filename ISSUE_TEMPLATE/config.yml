@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Esteira de CI da org
+    url: https://github.com/esquina-games/infra-actions-workflows#readme
+    about: Como o CI, o CD e os workflows reutilizáveis funcionam antes de abrir um problema de CI.

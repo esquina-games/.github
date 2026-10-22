@@ -1,0 +1,21 @@
+name: Ideia ou melhoria
+description: Uma ideia para o jogo, para a infraestrutura ou para o jeito de trabalhar.
+labels: [ideia]
+body:
+  - type: textarea
+    id: ideia
+    attributes:
+      label: A ideia
+      description: O que mudaria e para quem.
+    validations:
+      required: true
+  - type: textarea
+    id: porque
+    attributes:
+      label: Por quê
+      description: Que problema resolve ou que métrica deve mexer (retenção, partidas por dia, receita por usuário, minutos de CI…).
+  - type: textarea
+    id: como-medir
+    attributes:
+      label: Como saber se deu certo
+      description: O número ou o sinal que vamos olhar depois.

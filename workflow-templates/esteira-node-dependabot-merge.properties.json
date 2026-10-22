@@ -1,0 +1,7 @@
+{
+  "name": "Esteira da org: Merge do Dependabot (node)",
+  "description": "Merge do Dependabot da esteira esquina-games para projeto Node/TypeScript sem app. Chama os workflows reutilizáveis de esquina-games/infra-actions-workflows@v1.",
+  "iconName": "octicon git-merge",
+  "categories": ["TypeScript", "JavaScript"],
+  "filePatterns": ["package\\.json$"]
+}
