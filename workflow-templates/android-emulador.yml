@@ -1,0 +1,14 @@
+name: Android instrumentado (emulador)
+
+on:
+  pull_request:
+  push:
+    branches: [ $default-branch ]
+  workflow_dispatch:
+
+jobs:
+  emulador:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/android-emulador.yml@main
+    # with:
+    #   working-directory: app
+    #   script: ./gradlew connectedDebugAndroidTest --no-daemon
