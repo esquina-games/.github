@@ -2,8 +2,8 @@
 # CI da esteira da org (esquina-games/infra-actions-workflows), modelo flutter-node: monorepo com servidor Node/TypeScript
 # em server/ e app Flutter em app/ (como o campo-minado). Roda em todo pull request e em push na main.
 # Economia de minutos: no PR, cada parte só roda quando o PR mexe nela (ou nos workflows); na main roda sempre. Parte que
-# ainda não existe (sem server/package.json ou app/pubspec.yaml) é pulada pelo input `executar` (o job pulado sai com o nome
-# certo do check e conta como aprovado; um `if:` aqui deixaria o check obrigatório esperando).
+# ainda não existe (sem server/package.json ou app/pubspec.yaml) é pulada pelo input `executar` (o job roda em segundos e
+# sai verde com o nome certo do check; um `if:` aqui deixaria o check obrigatório esperando).
 # Checks para marcar como obrigatórios em Settings → Branches → main: "pins / Pins das actions",
 # "servidor / Servidor" e "app / App Flutter".
 # Runner: a esteira escolhe (GitHub → Cloudflare → casa) pela variável RUNNER (da organização, gravada pelo Worker de
