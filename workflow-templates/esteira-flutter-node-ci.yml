@@ -1,0 +1,71 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/flutter-node). Não edite aqui.
+# CI da esteira da org (esquina-games/infra-actions-workflows), modelo flutter-node: monorepo com servidor Node/TypeScript
+# em server/ e app Flutter em app/ (como o campo-minado). Roda em todo pull request e em push na main.
+# Economia de minutos: no PR, cada parte só roda quando o PR mexe nela (ou nos workflows); na main roda sempre. Parte que
+# ainda não existe (sem server/package.json ou app/pubspec.yaml) é pulada. Job pulado conta como aprovado.
+# Checks para marcar como obrigatórios em Settings → Branches → main: "pins / Pins das actions",
+# "servidor / Servidor" e "app / App Flutter".
+# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pelas variáveis RUNNER_* deste repositório; o job "O que rodar"
+# fica aqui e repete a mesma expressão (manter igual à da esteira).
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [$default-branch]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  pins:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/verificar-pins.yml@v1
+
+  mudancas:
+    name: O que rodar
+    runs-on: ${{ vars.RUNNER_GITHUB != 'offline' && 'ubuntu-latest' || vars.RUNNER_CLOUDFLARE == 'online' && fromJSON('["self-hosted","linux","cloudflare"]') || vars.RUNNER_CASA == 'online' && fromJSON('["self-hosted","linux","casa"]') || 'ubuntu-latest' }}
+    timeout-minutes: 5
+    outputs:
+      server: ${{ steps.server.outputs.mudou }}
+      app: ${{ steps.app.outputs.mudou }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+      - id: server
+        uses: esquina-games/infra-actions-workflows/actions/mudou@v1
+        with:
+          padrao: '^(server/|docker-compose\.yml$|\.github/workflows/)'
+          existe: server/package.json
+          sempre-fora-do-pr: "true"
+          rotulo: server
+      - id: app
+        uses: esquina-games/infra-actions-workflows/actions/mudou@v1
+        with:
+          padrao: '^(app/|\.github/workflows/)'
+          existe: app/pubspec.yaml
+          sempre-fora-do-pr: "true"
+          rotulo: app
+
+  servidor:
+    needs: mudancas
+    if: needs.mudancas.outputs.server == 'true'
+    uses: esquina-games/infra-actions-workflows/.github/workflows/ci-node.yml@v1
+    with:
+      nome: Servidor
+      diretorio: server
+      padrao-android: ""
+      artefato-cobertura: cobertura-servidor
+      pasta-build: build
+      artefato-build: servidor-build
+
+  app:
+    needs: mudancas
+    if: needs.mudancas.outputs.app == 'true'
+    uses: esquina-games/infra-actions-workflows/.github/workflows/ci-flutter.yml@v1
+    with:
+      diretorio: app

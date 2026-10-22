@@ -1,0 +1,34 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/capacitor). Não edite aqui.
+# CD da Google Play pela esteira da org (esquina-games/infra-actions-workflows): a cada merge na main com o CI verde, gera
+# o AAB assinado e envia para a faixa do Play Console (variáveis PLAY_TRACK, padrão internal, e PLAY_STATUS, padrão
+# completed). Só gera AAB se o commit mexeu em algo que entra no app. Sem os segredos, avisa e termina sem erro.
+# Segredos e passo a passo: comentário do topo de play-store-capacitor.yml na esteira.
+name: Play Store
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [$default-branch]
+  # À mão (Actions → Play Store → Run workflow): gera o AAB assinado de qualquer branch e o guarda como artefato.
+  # Só envia ao Play Console se "publicar" for marcado.
+  workflow_dispatch:
+    inputs:
+      publicar:
+        description: 'Enviar o AAB para a faixa do Play Console (desmarcado: só gera o artefato)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: play-store
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  play:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/play-store-capacitor.yml@v1
+    with:
+      publicar: ${{ github.event_name != 'workflow_dispatch' || inputs.publicar }}
+    secrets: inherit

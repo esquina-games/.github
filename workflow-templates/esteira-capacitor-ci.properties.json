@@ -1,0 +1,7 @@
+{
+  "name": "Esteira da org: CI (capacitor)",
+  "description": "CI da esteira esquina-games para jogo TypeScript + Vite com app Android pelo Capacitor. Chama os workflows reutilizáveis de esquina-games/infra-actions-workflows@v1.",
+  "iconName": "octicon checklist",
+  "categories": ["TypeScript", "JavaScript"],
+  "filePatterns": ["capacitor\\.config\\.(json|ts)$"]
+}

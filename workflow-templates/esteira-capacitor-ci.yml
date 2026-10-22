@@ -1,0 +1,38 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/capacitor). Não edite aqui.
+# CI da esteira da org (esquina-games/infra-actions-workflows), modelo capacitor: jogo TypeScript + Vite com app Android
+# pelo Capacitor. Roda em todo pull request e em push na main. Os passos ficam nos workflows reutilizáveis da esteira;
+# aqui só se escolhe o que liga. Checks para marcar como obrigatórios em Settings → Branches → main:
+# "pins / Pins das actions", "web / Testes e build" e "android / App Android" (job pulado conta como aprovado).
+# Economia de minutos: o APK só compila quando o run mexe na parte Android (regex padrao-android do ci-node.yml).
+# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pelas variáveis RUNNER_* deste repositório.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [$default-branch]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  pins:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/verificar-pins.yml@v1
+
+  web:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/ci-node.yml@v1
+    with:
+      saidas-build: |
+        dist/index.html
+        dist/artifact/index.html
+        dist/baixar/index.html
+        dist/privacidade.html
+
+  android:
+    needs: web
+    if: needs.web.outputs.android == 'true'
+    uses: esquina-games/infra-actions-workflows/.github/workflows/ci-android-capacitor.yml@v1

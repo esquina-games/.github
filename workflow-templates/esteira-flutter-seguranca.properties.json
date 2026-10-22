@@ -1,0 +1,7 @@
+{
+  "name": "Esteira da org: Segurança (flutter)",
+  "description": "Segurança da esteira esquina-games para app Flutter na raiz. Chama os workflows reutilizáveis de esquina-games/infra-actions-workflows@v1.",
+  "iconName": "octicon shield-check",
+  "categories": ["Dart"],
+  "filePatterns": ["pubspec\\.yaml$"]
+}

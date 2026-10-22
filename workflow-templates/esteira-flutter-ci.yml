@@ -1,0 +1,27 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/flutter). Não edite aqui.
+# CI da esteira da org (esquina-games/infra-actions-workflows), modelo flutter: app Flutter na raiz do repositório.
+# Roda em todo pull request e em push na main. Checks para marcar como obrigatórios em Settings → Branches → main:
+# "pins / Pins das actions" e "app / App Flutter".
+# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pelas variáveis RUNNER_* deste repositório.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [$default-branch]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  pins:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/verificar-pins.yml@v1
+
+  app:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/ci-flutter.yml@v1
+    with:
+      diretorio: "."

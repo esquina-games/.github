@@ -1,0 +1,24 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/flutter). Não edite aqui.
+# Segurança da esteira da org (esquina-games/infra-actions-workflows), modelo flutter: o CodeQL não analisa Dart, então
+# só os workflows passam por ele; o app é coberto pelo `flutter analyze` do CI e pelo Dependabot. Sem npm audit.
+# Não roda em PR; roda a cada push na main, toda segunda e à mão. Não marque estes checks como obrigatórios.
+name: Segurança
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [$default-branch]
+  schedule:
+    - cron: "17 9 * * 1" # segunda, 06:17 em Brasília
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  seguranca:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/seguranca.yml@v1
+    with:
+      linguagens: '["actions"]'
+      diretorios-npm: "[]"
