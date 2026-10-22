@@ -1,0 +1,34 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/flutter). Não edite aqui.
+# Firebase pela esteira da org (esquina-games/infra-actions-workflows): depois de merge na main com o CI verde, publica as
+# regras do Firestore e o Remote Config que o commit mudou (o Remote Config só quando remoteconfig.template.json mudou:
+# o deploy substitui o modelo inteiro do console). À mão (Actions → Firebase → Run workflow), publica o que for pedido.
+# Login no Google sem chave: rode uma vez `bash scripts/firebase-ci.sh <repositório> <projeto-firebase>` da esteira (cria a
+# confiança no GitHub e as variáveis do environment `firebase`). Sem login, avisa e não faz nada.
+name: Firebase
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [$default-branch]
+  workflow_dispatch:
+    inputs:
+      alvos:
+        description: "O que publicar (vazio = tudo: firestore:rules,firestore:indexes,remoteconfig)"
+        type: string
+        default: ""
+
+concurrency:
+  group: firebase
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write # login no Google sem chave (Workload Identity Federation)
+
+jobs:
+  firebase:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/firebase.yml@v1
+    with:
+      alvos: ${{ inputs.alvos }}
+    secrets: inherit

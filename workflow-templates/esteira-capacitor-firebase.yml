@@ -28,7 +28,7 @@ permissions:
 
 jobs:
   firebase:
-    uses: esquina-games/infra-actions-workflows/.github/workflows/firebase-capacitor.yml@v1
+    uses: esquina-games/infra-actions-workflows/.github/workflows/firebase.yml@v1
     with:
       alvos: ${{ inputs.alvos }}
     secrets: inherit
