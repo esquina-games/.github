@@ -2,11 +2,12 @@
 # CI da esteira da org (esquina-games/infra-actions-workflows), modelo flutter-node: monorepo com servidor Node/TypeScript
 # em server/ e app Flutter em app/ (como o campo-minado). Roda em todo pull request e em push na main.
 # Economia de minutos: no PR, cada parte só roda quando o PR mexe nela (ou nos workflows); na main roda sempre. Parte que
-# ainda não existe (sem server/package.json ou app/pubspec.yaml) é pulada. Job pulado conta como aprovado.
+# ainda não existe (sem server/package.json ou app/pubspec.yaml) é pulada pelo input `executar` (o job pulado sai com o nome
+# certo do check e conta como aprovado; um `if:` aqui deixaria o check obrigatório esperando).
 # Checks para marcar como obrigatórios em Settings → Branches → main: "pins / Pins das actions",
 # "servidor / Servidor" e "app / App Flutter".
-# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pelas variáveis RUNNER_* deste repositório; o job "O que rodar"
-# fica aqui e repete a mesma expressão (manter igual à da esteira).
+# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pela variável RUNNER (da organização, gravada pelo Worker de
+# esquina-games/infra-runner); o job "O que rodar" fica aqui e repete o mesmo runs-on da esteira.
 name: CI
 
 on:
@@ -27,7 +28,7 @@ jobs:
 
   mudancas:
     name: O que rodar
-    runs-on: ${{ vars.RUNNER_GITHUB != 'offline' && 'ubuntu-latest' || vars.RUNNER_CLOUDFLARE == 'online' && fromJSON('["self-hosted","linux","cloudflare"]') || vars.RUNNER_CASA == 'online' && fromJSON('["self-hosted","linux","casa"]') || 'ubuntu-latest' }}
+    runs-on: ${{ vars.RUNNER && fromJSON(vars.RUNNER) || 'ubuntu-latest' }}
     timeout-minutes: 5
     outputs:
       server: ${{ steps.server.outputs.mudou }}
@@ -53,9 +54,9 @@ jobs:
 
   servidor:
     needs: mudancas
-    if: needs.mudancas.outputs.server == 'true'
     uses: esquina-games/infra-actions-workflows/.github/workflows/ci-node.yml@v1
     with:
+      executar: ${{ needs.mudancas.outputs.server == 'true' }}
       nome: Servidor
       diretorio: server
       padrao-android: ""
@@ -65,7 +66,7 @@ jobs:
 
   app:
     needs: mudancas
-    if: needs.mudancas.outputs.app == 'true'
     uses: esquina-games/infra-actions-workflows/.github/workflows/ci-flutter.yml@v1
     with:
+      executar: ${{ needs.mudancas.outputs.app == 'true' }}
       diretorio: app

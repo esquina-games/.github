@@ -1,0 +1,55 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/capacitor). Não edite aqui.
+# Promoção na Google Play pela esteira da org (esquina-games/infra-actions-workflows): Actions → Play Store promover →
+# Run workflow. Leva a versão que já está numa faixa para a seguinte sem gerar outro AAB, com notas da versão tiradas
+# dos commits (ou o texto informado). Faixas da API: internal = teste interno, alpha = teste fechado, beta = teste
+# aberto, production = produção. Marque "simular" para conferir as notas no resumo sem mudar nada.
+name: Play Store promover
+
+on:
+  workflow_dispatch:
+    inputs:
+      de:
+        description: De (internal = interno, alpha = fechado, beta = aberto)
+        type: choice
+        options: [internal, alpha, beta]
+        default: internal
+      para:
+        description: Para (alpha = fechado, beta = aberto, production = produção)
+        type: choice
+        options: [alpha, beta, production]
+        default: alpha
+      fracao:
+        description: Fração dos usuários (1 = todos; 0.1 = lançamento gradual de 10%)
+        type: string
+        default: "1"
+      notas:
+        description: Notas da versão (vazio = tiradas dos commits)
+        type: string
+        default: ""
+      rascunho:
+        description: Criar como rascunho (primeira vez do app nesta faixa)
+        type: boolean
+        default: false
+      simular:
+        description: Só simular (valida na Play e descarta)
+        type: boolean
+        default: false
+
+concurrency:
+  group: play-store
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  promover:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/play-store-promover.yml@v1
+    with:
+      de: ${{ inputs.de }}
+      para: ${{ inputs.para }}
+      fracao: ${{ inputs.fracao }}
+      notas: ${{ inputs.notas }}
+      rascunho: ${{ inputs.rascunho }}
+      simular: ${{ inputs.simular }}
+    secrets: inherit

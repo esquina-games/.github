@@ -2,9 +2,11 @@
 # CI da esteira da org (esquina-games/infra-actions-workflows), modelo capacitor: jogo TypeScript + Vite com app Android
 # pelo Capacitor. Roda em todo pull request e em push na main. Os passos ficam nos workflows reutilizáveis da esteira;
 # aqui só se escolhe o que liga. Checks para marcar como obrigatórios em Settings → Branches → main:
-# "pins / Pins das actions", "web / Testes e build" e "android / App Android" (job pulado conta como aprovado).
+# "pins / Pins das actions", "web / Testes e build" e "android / App Android" (ou o ruleset da org, scripts/regras-org.sh).
+# O "pular o APK" é o input `executar`, e não um `if:` aqui: assim o check pulado sai com o nome certo e conta como aprovado.
 # Economia de minutos: o APK só compila quando o run mexe na parte Android (regex padrao-android do ci-node.yml).
-# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pelas variáveis RUNNER_* deste repositório.
+# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pela variável RUNNER (da organização, gravada pelo Worker de
+# esquina-games/infra-runner).
 name: CI
 
 on:
@@ -34,5 +36,6 @@ jobs:
 
   android:
     needs: web
-    if: needs.web.outputs.android == 'true'
     uses: esquina-games/infra-actions-workflows/.github/workflows/ci-android-capacitor.yml@v1
+    with:
+      executar: ${{ needs.web.outputs.android == 'true' }}

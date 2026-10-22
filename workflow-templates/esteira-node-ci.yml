@@ -3,7 +3,8 @@
 # servidor, biblioteca). Roda em todo pull request e em push na main. Checks para marcar como obrigatórios em
 # Settings → Branches → main: "pins / Pins das actions" e "node / Testes e build".
 # Scripts esperados no package.json: typecheck, lint, coverage (ou test, com cobertura: false) e build.
-# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pelas variáveis RUNNER_* deste repositório.
+# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pela variável RUNNER (da organização, gravada pelo Worker de
+# esquina-games/infra-runner).
 name: CI
 
 on:

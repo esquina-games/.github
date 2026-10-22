@@ -2,7 +2,8 @@
 # CI da esteira da org (esquina-games/infra-actions-workflows), modelo flutter: app Flutter na raiz do repositório.
 # Roda em todo pull request e em push na main. Checks para marcar como obrigatórios em Settings → Branches → main:
 # "pins / Pins das actions" e "app / App Flutter".
-# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pelas variáveis RUNNER_* deste repositório.
+# Runner: a esteira escolhe (GitHub → Cloudflare → casa) pela variável RUNNER (da organização, gravada pelo Worker de
+# esquina-games/infra-runner).
 name: CI
 
 on:
