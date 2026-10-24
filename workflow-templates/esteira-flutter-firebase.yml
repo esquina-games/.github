@@ -4,6 +4,7 @@
 # o deploy substitui o modelo inteiro do console). À mão (Actions → Firebase → Run workflow), publica o que for pedido.
 # Login no Google sem chave: rode uma vez `bash scripts/firebase-ci.sh <repositório> <projeto-firebase>` da esteira (cria a
 # confiança no GitHub e as variáveis do environment `firebase`). Sem login, avisa e não faz nada.
+# Também confere o app/android/app/google-services.json com o app Android do projeto e, se falta ou mudou, abre um PR com ele.
 name: Firebase
 
 on:
@@ -23,7 +24,8 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  contents: write # PR do google-services.json, quando falta ou mudou
+  pull-requests: write
   id-token: write # login no Google sem chave (Workload Identity Federation)
 
 jobs:
@@ -31,4 +33,5 @@ jobs:
     uses: esquina-games/infra-actions-workflows/.github/workflows/firebase.yml@v1
     with:
       alvos: ${{ inputs.alvos }}
+      config-android: app/android/app/google-services.json
     secrets: inherit
