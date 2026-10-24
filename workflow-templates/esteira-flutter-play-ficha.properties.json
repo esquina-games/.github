@@ -1,0 +1,7 @@
+{
+  "name": "Esteira da org:  (flutter)",
+  "description": " da esteira esquina-games para app Flutter em app/ (base-flutter). Chama os workflows reutilizáveis de esquina-games/infra-actions-workflows@v1.",
+  "iconName": "octicon checklist",
+  "categories": ["Dart"],
+  "filePatterns": ["^app/pubspec\\.yaml$"]
+}

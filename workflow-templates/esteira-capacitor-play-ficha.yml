@@ -1,0 +1,37 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/capacitor). Não edite aqui.
+# Ficha da Play pela esteira da org (esquina-games/infra-actions-workflows), modelo capacitor: a cada push na main que
+# mexe em loja/play/, deixa a ficha do app na Play igual à pasta (textos, ícone, recurso gráfico, capturas e contatos de
+# loja/play/detalhes.json), só o que mudou. À mão (Actions → Ficha da Play → Run workflow): "simular" valida na Play sem
+# mudar nada; "capturas" gera as capturas de novo do app atual (npm run loja:capturas) antes de enviar e as deixa como
+# artefato. Sem PLAY_SERVICE_ACCOUNT_JSON (environment play-store), só confere a pasta. A conta de serviço precisa de
+# "Editar a ficha da loja" no app. Categoria, tags, IARC, público-alvo e Segurança dos dados ficam no Play Console.
+name: Ficha da Play
+
+on:
+  push:
+    branches: [$default-branch]
+    paths: ["loja/play/**"]
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Só validar na Play, sem mudar nada"
+        type: boolean
+        default: false
+      capturas:
+        description: "Gerar as capturas de novo do app atual antes de enviar"
+        type: boolean
+        default: false
+
+concurrency:
+  group: play-ficha
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  ficha:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/play-ficha.yml@v1
+    with:
+      simular: ${{ inputs.simular || false }}
+      capturas: ${{ inputs.capturas || false }}
