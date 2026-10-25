@@ -36,3 +36,4 @@ jobs:
     with:
       simular: ${{ inputs.simular || false }}
       capturas: ${{ inputs.capturas || false }}
+    secrets: inherit
