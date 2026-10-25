@@ -1,7 +1,7 @@
 # Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/flutter). Não edite aqui.
 # CD da Google Play pela esteira da org (esquina-games/infra-actions-workflows), modelo flutter (app em app/): a cada
 # merge na main com o CI verde, gera o AAB assinado e envia para a faixa do Play Console (variáveis PLAY_TRACK, padrão
-# internal, e PLAY_STATUS, padrão completed). Só gera AAB se o commit mexeu em algo que entra no app. Sem os segredos,
+# internal, e PLAY_STATUS, padrão auto). Só gera AAB se o commit mexeu em algo que entra no app. Sem os segredos,
 # avisa e termina sem erro. Segredos, variáveis e passo a passo: docs/PLAY-STORE.md e o topo de play-store-flutter.yml.
 # Não personalize este arquivo: versão do Flutter e exigir o Firebase vão no .esteira-config da raiz (versao-flutter=…,
 # exigir-firebase=true), assim o "Atualizar projetos" da esteira continua trocando ele.

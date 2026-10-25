@@ -1,7 +1,7 @@
 # Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/capacitor). Não edite aqui.
 # CD da Google Play pela esteira da org (esquina-games/infra-actions-workflows): a cada merge na main com o CI verde, gera
 # o AAB assinado e envia para a faixa do Play Console (variáveis PLAY_TRACK, padrão internal, e PLAY_STATUS, padrão
-# completed). Só gera AAB se o commit mexeu em algo que entra no app. Sem os segredos, avisa e termina sem erro.
+# auto). Só gera AAB se o commit mexeu em algo que entra no app. Sem os segredos, avisa e termina sem erro.
 # Segredos e passo a passo: comentário do topo de play-store-capacitor.yml na esteira.
 name: Play Store
 
