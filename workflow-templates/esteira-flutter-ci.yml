@@ -4,6 +4,8 @@
 # "app / App Flutter" (formatação, analyze, testes com cobertura e APK de depuração).
 # Runner: a esteira escolhe (GitHub → Cloudflare → casa) pela variável RUNNER (gravada pelo Worker de
 # esquina-games/infra-runner).
+# Não personalize este arquivo: versão do Flutter e build web do projeto vão no .esteira-config da raiz (versao-flutter=…,
+# web=true), assim o "Atualizar projetos" da esteira continua trocando ele.
 name: CI
 
 on:
