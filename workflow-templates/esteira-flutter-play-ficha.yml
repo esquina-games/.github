@@ -4,7 +4,8 @@
 # loja/play/detalhes.json), só o que mudou. À mão (Actions → Ficha da Play → Run workflow): "simular" valida na Play sem
 # mudar nada; "capturas" gera as capturas de novo do app atual (npm run loja:capturas) antes de enviar e as deixa como
 # artefato. Sem PLAY_SERVICE_ACCOUNT_JSON (environment play-store), só confere a pasta. A conta de serviço precisa de
-# "Editar a ficha da loja" no app. Categoria, tags, IARC, público-alvo e Segurança dos dados ficam no Play Console.
+# "Editar a ficha da loja" no app. Segurança dos dados: loja/play/seguranca-dados.csv (o CSV que o Play Console exporta);
+# testadores do teste fechado: variável PLAY_TESTADORES. Categoria, tags, IARC e público-alvo ficam no Play Console.
 name: Ficha da Play
 
 on:
