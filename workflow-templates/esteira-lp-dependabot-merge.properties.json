@@ -1,0 +1,7 @@
+{
+  "name": "Esteira da org: Merge do Dependabot (lp)",
+  "description": "Merge do Dependabot da esteira esquina-games para LP do base-lp (Astro estático num Worker da Cloudflare, só web). Chama os workflows reutilizáveis de esquina-games/infra-actions-workflows@v1.",
+  "iconName": "octicon git-merge",
+  "categories": ["TypeScript", "JavaScript"],
+  "filePatterns": ["^astro\\.config\\.mjs$", "^wrangler\\.jsonc$"]
+}

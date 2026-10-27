@@ -1,0 +1,18 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/lp). Não edite aqui.
+# Merge automático dos PRs do Dependabot pela esteira da org (esquina-games/infra-actions-workflows): depois do CI verde,
+# entra sozinho qualquer PR do Dependabot (o "Dependabot verde" da esteira pega, toda segunda, os que ficam verdes
+# depois). Desligar: apague este arquivo (ou ponha em .esteira-manter) e crie a variável DEPENDABOT_MERGE=false.
+name: Merge do Dependabot
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  merge:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/dependabot-merge.yml@v1

@@ -1,0 +1,26 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/lp). Não edite aqui.
+# Prévia de cada PR pela esteira (lp-publicar.yml, ambiente previa): build e `wrangler versions upload` com o apelido
+# pr-<número>, sem mexer na produção; o link (https://pr-<número>-<id>.<conta>.workers.dev) vai num comentário do PR,
+# atualizado a cada push. A prévia não é indexada (robots e noindex). PR do Dependabot ou de fork não tem os segredos:
+# a prévia é pulada sem erro.
+name: Prévia
+
+on:
+  pull_request:
+
+concurrency:
+  group: previa-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  previa:
+    if: github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+    uses: esquina-games/infra-actions-workflows/.github/workflows/lp-publicar.yml@v1
+    with:
+      ambiente: previa
+      pr: ${{ github.event.pull_request.number }}
+    secrets: inherit
