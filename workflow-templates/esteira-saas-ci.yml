@@ -1,0 +1,40 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/saas). Não edite aqui.
+# CI da esteira da org (esquina-games/infra-actions-workflows), modelo saas: monorepo TypeScript (api Hono no Worker,
+# web React, infra Pulumi) com app Android pelo Capacitor. Roda em todo pull request e em push na main. Checks
+# obrigatórios (ruleset esteira-saas da org, propriedade stack = saas): "pins / Pins das actions", "saas / Testes e
+# build" e "android / App Android". O APK é pulado pelo input `executar`, não por `if:` aqui.
+# O smoke (npm run smoke) sobe o Worker de verdade (wrangler dev, D1 e KV locais) e faz o fluxo inteiro no Chromium.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [$default-branch]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  pins:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/verificar-pins.yml@v1
+
+  saas:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/ci-node.yml@v1
+    with:
+      saidas-build: |
+        web/dist/index.html
+        web/dist/privacidade.html
+      pasta-build: web/dist
+      smoke: true
+      padrao-android: '^(android/|ios/|capacitor\.config\.json$|package(-lock)?\.json$|web/package\.json$|\.github/workflows/|web/src/casca/(plataforma|firebase|autenticador)\.ts$)'
+      android-na-main: true
+
+  android:
+    needs: saas
+    uses: esquina-games/infra-actions-workflows/.github/workflows/ci-android-capacitor.yml@v1
+    with:
+      executar: ${{ needs.saas.outputs.android == 'true' }}

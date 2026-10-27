@@ -1,0 +1,7 @@
+{
+  "name": "Esteira da org: CI (saas)",
+  "description": "CI da esteira esquina-games para SaaS do base-saas (Worker Hono + D1/KV pelo Pulumi, web React, app Capacitor). Chama os workflows reutilizáveis de esquina-games/infra-actions-workflows@v1.",
+  "iconName": "octicon checklist",
+  "categories": ["TypeScript", "JavaScript"],
+  "filePatterns": ["^infra/Pulumi\\.yaml$", "^wrangler\\.jsonc$"]
+}

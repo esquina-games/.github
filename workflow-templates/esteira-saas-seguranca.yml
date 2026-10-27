@@ -1,0 +1,21 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/saas). Não edite aqui.
+# Segurança da esteira da org (esquina-games/infra-actions-workflows): CodeQL (TypeScript/JavaScript e workflows) e npm
+# audit. Não roda em PR (economia de minutos); roda a cada push na main, toda segunda e à mão. Não marque estes checks como
+# obrigatórios: eles não rodam em PR e o PR ficaria esperando para sempre.
+name: Segurança
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [$default-branch]
+  schedule:
+    - cron: "17 9 * * 1" # segunda, 06:17 em Brasília
+
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  seguranca:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/seguranca.yml@v1

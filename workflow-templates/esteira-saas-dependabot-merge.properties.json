@@ -1,0 +1,7 @@
+{
+  "name": "Esteira da org: Merge do Dependabot (saas)",
+  "description": "Merge do Dependabot da esteira esquina-games para SaaS do base-saas (Worker Hono + D1/KV pelo Pulumi, web React, app Capacitor). Chama os workflows reutilizáveis de esquina-games/infra-actions-workflows@v1.",
+  "iconName": "octicon git-merge",
+  "categories": ["TypeScript", "JavaScript"],
+  "filePatterns": ["^infra/Pulumi\\.yaml$", "^wrangler\\.jsonc$"]
+}

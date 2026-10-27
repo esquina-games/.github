@@ -1,0 +1,24 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/saas). Não edite aqui.
+# Backlog do ROADMAP e construção contínua pela esteira (roadmap-issues.yml): a cada push na main, cada item `- [ ]` da
+# etapa atual do docs/ROADMAP.md vira uma issue com a label `roadmap` (sem repetir título). Com a variável
+# SAAS_CLAUDE_AUTOMATICO=true, a issue `roadmap` aberta mais antiga vai para o Claude (workflow Claude), uma de cada vez:
+# o merge do PR dele (que fecha a issue e marca o item [x]) puxa a próxima. Issue com a label `bloqueada` fica de fora.
+name: ROADMAP
+
+on:
+  push:
+    branches: [$default-branch]
+  workflow_dispatch:
+
+concurrency:
+  group: roadmap
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+  actions: write
+
+jobs:
+  issues:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/roadmap-issues.yml@v1
