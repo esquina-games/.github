@@ -10,6 +10,9 @@ on:
     workflows: [CI]
     types: [completed]
     branches: [$default-branch]
+  # Com a variável PLAY_GATILHO=tag, quem publica é a tag vX.Y.Z (de um commit da main), e o merge não envia nada
+  push:
+    tags: ['v[0-9]*']
   # À mão (Actions → Play Store → Run workflow): gera o AAB assinado de qualquer branch e o guarda como artefato.
   # Só envia ao Play Console se "publicar" for marcado.
   workflow_dispatch:
