@@ -1,0 +1,42 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/flutter-node). Não edite aqui.
+# CD da Google Play pela esteira da org (esquina-games/infra-actions-workflows), modelo flutter-node (app Flutter em app/,
+# servidor em server/): a cada merge na main com o CI verde, gera o AAB assinado e envia para a faixa do Play Console
+# (variáveis PLAY_TRACK, padrão internal, e PLAY_STATUS, padrão auto). Só gera AAB se o commit mexeu em algo que entra no
+# app (commit só do server/ não gera). Sem os segredos, avisa e termina sem erro. Segredos, variáveis e passo a passo: docs/PLAY-STORE.md e o topo de play-store-flutter.yml.
+# Não personalize este arquivo: versão do Flutter e exigir o Firebase vão no .esteira-config da raiz (versao-flutter=…,
+# exigir-firebase=true), assim o "Atualizar projetos" da esteira continua trocando ele.
+name: Play Store
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [$default-branch]
+  # Com a variável PLAY_GATILHO=tag, quem publica é a tag vX.Y.Z (de um commit da main), e o merge não envia nada
+  push:
+    tags: ['v[0-9]*']
+  # À mão (Actions → Play Store → Run workflow): gera o AAB assinado de qualquer branch e o guarda como artefato.
+  # Só envia ao Play Console se "publicar" for marcado.
+  workflow_dispatch:
+    inputs:
+      publicar:
+        description: 'Enviar o AAB para a faixa do Play Console (desmarcado: só gera o artefato)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: play-store
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  play:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/play-store-flutter.yml@v1
+    with:
+      publicar: ${{ github.event_name != 'workflow_dispatch' || inputs.publicar }}
+      # o app acha o servidor pelas variáveis NAKAMA_* (NAKAMA_HOST, NAKAMA_SSL…) no build; sem elas, o host de
+      # desenvolvimento (o emulador)
+      prefixos-build: "ANDROID_ADMOB_ IOS_ADMOB_ WEB_ NAKAMA_"
+    secrets: inherit

@@ -1,0 +1,7 @@
+{
+  "name": "Esteira da org: Play Store (CD) (flutter-node)",
+  "description": "Play Store (CD) da esteira esquina-games para monorepo com server/ (Node) e app/ (Flutter). Chama os workflows reutilizáveis de esquina-games/infra-actions-workflows@v1.",
+  "iconName": "octicon rocket",
+  "categories": ["TypeScript", "JavaScript"],
+  "filePatterns": ["^server/package\\.json$", "^app/pubspec\\.yaml$"]
+}
