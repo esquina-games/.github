@@ -1,0 +1,28 @@
+# Gerado por scripts/gerar-templates-org.sh (esquina-games/infra-actions-workflows, modelos/flutter-node). Não edite aqui.
+# APK de depuração pela esteira da org (esquina-games/infra-actions-workflows), modelo flutter-node (app Flutter em app/,
+# servidor em server/): à mão (Actions → APK de depuração → Run workflow, escolhendo a branch), gera o APK de depuração
+# com a tela de depuração da casca (chacoalhe o celular ou toque na notificação "Depuração") e guarda por 14 dias como
+# artefato. Anúncios simulados; assinado com a chave de upload quando o repositório tem os segredos da Play. Detalhes no
+# topo de apk-depuracao-flutter.yml.
+# Não personalize este arquivo: versão do Flutter e prefixos do build vão no .esteira-config da raiz (versao-flutter=…,
+# prefixos-build=…), assim o "Atualizar projetos" da esteira continua trocando ele.
+name: APK de depuração
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: apk-depuracao-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  apk:
+    uses: esquina-games/infra-actions-workflows/.github/workflows/apk-depuracao-flutter.yml@v1
+    with:
+      # o app acha o servidor pelas variáveis NAKAMA_* no build, como no play-store.yml (prefixos-build no
+      # .esteira-config troca a lista, ex. para FLAGS_ e CLOUDFLARE_)
+      prefixos-build: "ANDROID_ADMOB_ IOS_ADMOB_ WEB_ NAKAMA_"
+    secrets: inherit
