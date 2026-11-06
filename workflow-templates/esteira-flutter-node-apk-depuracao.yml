@@ -4,8 +4,8 @@
 # com a tela de depuração da casca (chacoalhe o celular ou toque na notificação "Depuração") e guarda por 14 dias como
 # artefato. Anúncios simulados; assinado com a chave de upload quando o repositório tem os segredos da Play. Detalhes no
 # topo de apk-depuracao-flutter.yml.
-# Não personalize este arquivo: versão do Flutter e prefixos do build vão no .esteira-config da raiz (versao-flutter=…,
-# prefixos-build=…), assim o "Atualizar projetos" da esteira continua trocando ele.
+# Não personalize este arquivo: a versão do Flutter vai no .esteira-config da raiz (versao-flutter=…); os prefixos do
+# build ficam no with: abaixo, iguais em todo flutter-node, e o "Atualizar projetos" da esteira continua trocando ele.
 name: APK de depuração
 
 on:
@@ -22,7 +22,8 @@ jobs:
   apk:
     uses: esquina-games/infra-actions-workflows/.github/workflows/apk-depuracao-flutter.yml@v1
     with:
-      # o app acha o servidor pelas variáveis NAKAMA_* no build, como no play-store.yml (prefixos-build no
-      # .esteira-config troca a lista, ex. para FLAGS_ e CLOUDFLARE_)
-      prefixos-build: "ANDROID_ADMOB_ IOS_ADMOB_ WEB_ NAKAMA_"
+      # o app acha o servidor pelas variáveis do build: NAKAMA_* (NAKAMA_HOST, NAKAMA_SSL…) ou, na Cloudflare,
+      # FLAGS_SERVIDOR e CLOUDFLARE_URL; GOOGLE_SERVER_CLIENT_ID para o login com Google. Este with: ganha do
+      # prefixos-build do .esteira-config: prefixo novo entra aqui, na esteira, para valer em todo flutter-node.
+      prefixos-build: "ANDROID_ADMOB_ IOS_ADMOB_ WEB_ NAKAMA_ FLAGS_ CLOUDFLARE_ GOOGLE_SERVER_"
     secrets: inherit
